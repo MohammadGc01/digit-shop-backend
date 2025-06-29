@@ -1,17 +1,25 @@
 # digit-shop-backend
 
-step 1 : download source code 
-</hr>
+# step 1 : 
 
-step 2 : make .env file and insert this =>
+download source code 
 
-JWT_SECRET=DigGiT_t_S_sho_dwadwadwadwaP
+# step 2 :
 
-DB_HOST=localhost
-DB_USER=root
+make .env file and insert this =>
+
+``
+JWT_SECRET=
+~~
+DB_HOST=
+DB_USER=
 DB_PASS=
-DB_NAME=digitshop
-</hr>
-step 3 : open cmd & npm i 
-</hr>
-step 4 : npm start 
+DB_NAME= ``
+
+# step 3 :
+open cmd write 
+``  npm i  ``
+
+# step 4 : 
+
+`` npm start ``
