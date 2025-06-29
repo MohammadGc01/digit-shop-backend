@@ -10,7 +10,6 @@ make .env file and insert this =>
 
 ``
 JWT_SECRET=
-~~
 DB_HOST=
 DB_USER=
 DB_PASS=
