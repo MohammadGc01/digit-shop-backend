@@ -9,10 +9,10 @@ download source code
 make .env file and insert this =>
 
 ``
-JWT_SECRET=
-DB_HOST=
-DB_USER=
-DB_PASS=
+JWT_SECRET= </br>
+DB_HOST= </br>
+DB_USER= </br>
+DB_PASS= </br>
 DB_NAME= ``
 
 # step 3 :
