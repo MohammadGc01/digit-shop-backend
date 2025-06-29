@@ -8,7 +8,7 @@ download source code
 
 make .env file and insert this =>
 
-`` JWT_SECRET= </br> `` </br>
+`` JWT_SECRET= </br> ``
 `` DB_HOST=  ``
 `` DB_USER= `` 
 `` DB_PASS= ``
