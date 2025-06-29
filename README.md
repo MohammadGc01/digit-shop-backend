@@ -17,7 +17,7 @@ DB_PASS=
 DB_NAME= ``
 
 # step 3 :
-open cmd write 
+
 ``  npm i  ``
 
 # step 4 : 
