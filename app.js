@@ -7,7 +7,6 @@ const body_parser = require('body-parser')
 const user_api = require("./routes/user")
 const product_api = require('./routes/products')
 const cart_api = require('./routes/cart')
-const Permissions = require('./constants/Permissions')
 
 app.use(cors())
 app.use(body_parser.urlencoded())
@@ -20,7 +19,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(() => {
     res.json(404)
 })
-
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
