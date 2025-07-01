@@ -1,9 +1,12 @@
-const Permissions = require('../constants/Permissions')
-const { add_product, add_variant } = require('../controller/products_controller')
-const { authorization, authentication } = require('../middleware/auth')
-const { checkPermission } = require('../middleware/checkPermission')
+const Permissions = require("../constants/Permissions");
+const {
+  add_product,
+  add_variant,
+} = require("../controller/products_controller");
+const { authorization, authentication } = require("../middleware/auth");
+const { checkPermission } = require("../middleware/checkPermission");
 
-const router = require('express').Router()
+const router = require("express").Router();
 
 /**
  * @swagger
@@ -56,7 +59,7 @@ const router = require('express').Router()
  *                   example: false
  *                 message:
  *                   type: string
- *                   example: درخواستی که دادید هیچ بدنه ای نداره 
+ *                   example: درخواستی که دادید هیچ بدنه ای نداره
  *       500:
  *         description: خطا در سمت سرور
  */
@@ -112,27 +115,37 @@ const router = require('express').Router()
  *                   example: false
  *                 message:
  *                   type: string
- *                   example: درخواستی که دادید هیچ بدنه ای نداره 
+ *                   example: درخواستی که دادید هیچ بدنه ای نداره
  *       500:
  *         description: خطا در سمت سرور
  */
 
+router.post("/add", authentication, async (req, res) => {
+  const user = await authorization(req);
+  const canAccess = await checkPermission(
+    user.role,
+    Permissions.CREATE_PRODUCTS
+  );
+  if (!canAccess)
+    return res
+      .status(403)
+      .json({ message: "You do not have permission to perform this action" });
+  add_product(req, res);
+});
 
-router.post('/add', authentication, async (req , res) => {
-    const user = await authorization(req)
-    const canAccess  = await checkPermission(user.role , Permissions.CREATE_PRODUCTS)
-    if(!canAccess) return res.status(403).json({ message: 'You do not have permission to perform this action' })
-        add_product(req ,res)
-    })
-
-
-    router.post('/variant/add', authentication, async (req , res) => {
-        const user = await authorization(req)
-        const canAccess  = await checkPermission(user.role , Permissions.CREATE_VARIANT)
-        if(!canAccess) return res.status(403).json({ message: 'You do not have permission to perform this action' })
-        add_variant(req ,res)
-    })
+router.post("/variant/add", authentication, async (req, res) => {
+  const user = await authorization(req);
+  const canAccess = await checkPermission(
+    user.role,
+    Permissions.CREATE_VARIANT
+  );
+  if (!canAccess)
+    return res
+      .status(403)
+      .json({ message: "You do not have permission to perform this action" });
+  add_variant(req, res);
+});
 
 
 
-    module.exports = router
+module.exports = router;
