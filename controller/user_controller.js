@@ -21,7 +21,7 @@ async function RegisterUser(req, res) {
 
   const hashPassword = await bcrypt.hash(password, 10);
 
-  const sql = `INSERT INTO users(username, email, password, role) VALUES (?, ?, ?, ?)`;
+  const sql = `INSERT INTO users(username, email, password) VALUES (?, ?, ?)`;
 
   db.query(
     sql,
@@ -36,9 +36,30 @@ async function RegisterUser(req, res) {
         return res.status(500).send("ثبت‌نام با مشکل مواجه شد");
       }
 
+      const role_id = await new Promise( (resolve , reject) => {
+        db.query("SELECT * FROM roles WHERE set_defualt_role = 1", (role_err , role_result) => {
+          if(role_err) return reject(role_err)
+            resolve(role_result[0].id)
+        });
+      })
+      const user_id = result.insertId;
+
+      const sql2 = `INSERT INTO user_role(user_id, role_id) VALUES (?, ?)`;
+      const role_insert_result = await new Promise((resolve , reject) => {
+         db.query(sql2, [user_id, role_id], (insertErr , insertResult) =>{
+          if(insertErr) return reject(insertErr)
+            resolve(insertResult)
+         })
+      })
+
+
       const log = new logger(
         "info",
-        `ثبت‌نام موفق: نام کاربری ${username} | ایمیل ${email}`
+        `ثبت‌نام موفق: نام کاربری ${username} | ایمیل ${email}
+        
+        ${role_insert_result}
+        
+        `
       );
       await log.save();
 
@@ -192,9 +213,58 @@ async function get_user_role(user) {
   return roleData;
 }
 
+
+async function addRole(req, res) {
+  const { user_id, role_id } = req.body;
+  if (!user_id || !role_id) {
+    return res.json({
+      success: false,
+      message: "لطفا تمام فیلد ها را پر کنید",
+    });
+  }
+
+  // بررسی تکراری بودن
+  const checkSql = "SELECT * FROM user_role WHERE user_id = ? AND role_id = ?";
+  db.query(checkSql, [user_id, role_id], (err, result) => {
+    if (err) {
+      return res.json({
+        success: false,
+        message: "خطایی رخ داده است",
+      });
+    }
+    if (result.length > 0) {
+      return res.json({
+        success: false,
+        message: "این کاربر قبلاً این نقش را دارد",
+      });
+    }
+
+    // اضافه کردن نقش
+    const sql = "INSERT INTO user_role(user_id, role_id) VALUES (?, ?)";
+    db.query(sql, [user_id, role_id], (err2, result2) => {
+      if (err2) {
+        return res.json({
+          success: false,
+          message: "خطایی رخ داده است",
+        });
+      }
+      if (result2.affectedRows === 0) {
+        return res.json({
+          success: false,
+          message: "نقش اضافه نشد",
+        });
+      }
+      res.json({
+        success: true,
+        message: "نقش با موفقیت اضافه شد",
+      });
+    });
+  });
+}
 module.exports = {
   RegisterUser,
   LoginUser,
   get_user_role,
   createRole,
+  addRole,
 };
