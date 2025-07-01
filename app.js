@@ -1,4 +1,6 @@
 const express = require('express')
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
 const app = express()
 const cors = require('cors')
 const body_parser = require('body-parser')
@@ -14,14 +16,13 @@ app.use(body_parser.json())
 app.use('/user',user_api)
 app.use('/product',product_api)
 app.use("/cart", cart_api)
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(() => {
     res.json(404)
 })
 
 
-app.listen("3000", () => {
-    console.log("app start on port 3000");
-})
-
-
+app.listen(3000, () => {
+  console.log("Server running on http://localhost:3000");
+  console.log("Swagger on http://localhost:3000/api-docs");
+});

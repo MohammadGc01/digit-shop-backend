@@ -36,7 +36,7 @@ async function add_product(req, res) {
         `محصول جدیدی با موفقیت اضافه شد ✅`
     );
     await log.save();
-    res.json({
+    res.status(200).json({
       message: "محصول شما با موفقیت اضافه شد ✅",
     });
   });
