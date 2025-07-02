@@ -89,7 +89,7 @@ const router = require("express").Router();
  * @swagger
  * /user/role/create:
  *   post:
- *     summary: ایجاد نقش جدید (فقط با دسترسی CREATE_VARIANT)
+ *     summary: ایجاد نقش جدید (فقط با دسترسی CREATE_ROLE)
  *     tags: [Roles]
  *     security:
  *       - bearerAuth: []
@@ -166,7 +166,7 @@ router.post("/register", (req, res) => {
 
 router.post("/role/create", authentication, async (req, res) => {
   const user = await authorization(req);
-  const canAccess = await checkPermission(user.role,Permissions.CREATE_VARIANT);
+  const canAccess = await checkPermission(user.role,Permissions.CREATE_ROLE);
   if (!canAccess) return res.status(403).json({ message: "You do not have permission to perform this action" });
   createRole(req, res);
 });
