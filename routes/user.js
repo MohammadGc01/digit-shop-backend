@@ -173,9 +173,9 @@ router.post("/role/create", authentication, async (req, res) => {
 });
 
 router.delete('/role/delete/:role_id', authentication, async (req , res) => {
-  // const user = await authorization(req);
-  // const canAccess = await checkPermission(user.role,Permissions.DELETE_ROLE);
-  // if (!canAccess) return res.status(403).json({ message: "You do not have permission to perform this action" });
+  const user = await authorization(req);
+  const canAccess = await checkPermission(user.role,Permissions.DELETE_ROLE);
+  if (!canAccess) return res.status(403).json({ message: "You do not have permission to perform this action" });
   deleteRole(req, res);
   
 })
