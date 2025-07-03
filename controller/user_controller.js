@@ -294,4 +294,5 @@ module.exports = {
   createRole,
   deleteRole,
   addRole,
+  removeRole
 };
