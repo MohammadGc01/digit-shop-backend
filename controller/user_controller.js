@@ -185,6 +185,20 @@ async function createRole(req, res) {
   });
 }
 
+async function deleteRole(req, res) {
+  const id = req.params.role_id
+  if(!id) return res.json({message : "شما پارامتر ایدی را وارد نکردید"})
+  
+  db.query("DELETE FROM roles WHERE id = ?", [id], (err , result) => {
+    if(err){
+      return res.json({
+        message : "موقع حذف رول مشکلی به وجود امد دوباره امتحان کنید"
+      })
+    }
+     res.json({message : `رول ${result} با موفقیت حذف شد`})
+  })
+}
+
 async function get_user_role(user) {
   const [roleRow] = await new Promise((resolve, reject) => {
     db.query(
@@ -278,6 +292,6 @@ module.exports = {
   LoginUser,
   get_user_role,
   createRole,
+  deleteRole,
   addRole,
-  removeRole
 };
