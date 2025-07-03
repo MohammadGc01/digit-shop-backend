@@ -6,6 +6,7 @@ const Permissions = {
 
   CREATE_ROLE : "CREATE_ROLE",
   ADD_ROLE : "ADD_ROLE",
+  REMOVE_ROLE : "REMOVE_ROLE",
 
   VIEW_LOGS: "VIEW_LOGS",
 };

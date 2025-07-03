@@ -261,10 +261,23 @@ async function addRole(req, res) {
     });
   });
 }
+async function removeRole(req , res) {
+  const id = req.params.user_id
+ if(!id){
+  return res.json({message : "شما پارامتر ایدی را وارد نکردید"})
+ }  
+ 
+ db.query("DELETE FROM user_role WHERE user_id", [id], async (err , result) => {
+   if(err) return res.json({message : "موقع گرفتن رول یوزر مشکلی پیش اومد"})
+    res.json({message : "رول کاربر گرفته شد"})  
+ })
+
+}
 module.exports = {
   RegisterUser,
   LoginUser,
   get_user_role,
   createRole,
   addRole,
+  removeRole
 };

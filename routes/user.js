@@ -178,5 +178,11 @@ router.post('/role/add', authentication, async (req, res) => {
   addRole(req, res);
 });
 
+router.post('/role/remove/:user_id', authentication , async (req , res) => {
+   const user = await authorization(req);
+  const canAccess = await checkPermission(user.role,Permissions.REMOVE_ROLE);
+  if (!canAccess) return res.status(403).json({ message: "You do not have permission to perform this action" });
+  removeRole(req,res)
+})
 
 module.exports = router;
