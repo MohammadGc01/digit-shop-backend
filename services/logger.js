@@ -1,4 +1,4 @@
-//// loglevel (info , warn , error , debug)
+//// loglevel (info , warn , error)
 
 const { save_to_database } = require("../controller/log_controller")
 

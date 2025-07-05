@@ -9,6 +9,7 @@ const body_parser = require('body-parser')
 const user_api = require("./routes/user")
 const product_api = require('./routes/products')
 const cart_api = require('./routes/cart')
+const order_api = require('./routes/order')
 
 app.use(cors())
 app.use(body_parser.urlencoded())
@@ -21,12 +22,14 @@ app.get('/image/:name', async (req , res) => {
 
 app.use('/user',user_api)
 app.use('/product',product_api)
-app.use("/cart", cart_api)
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use(() => {
-    res.json(404)
-})
+app.use('/cart', cart_api)
+app.use('/order', order_api)
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use((req, res) => {
+    res.status(404).json({ message: "Not Found" });
+})
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
   console.log("Swagger on http://localhost:3000/api-docs");

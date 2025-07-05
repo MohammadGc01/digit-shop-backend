@@ -103,8 +103,21 @@ async function delete_item(req , res) {
     })
 }
 
+async function get_cart_item(cart_id) {
+  const sql = "SELECT * FROM cart_items WHERE cart_id = ?"
+  return new Promise( (resolve , reject) => {
+    db.query(sql,[cart_id], (err , result) => {
+      if(err) return reject(err)
+        return resolve(result)
+    })
+  })
+  
+}
+
 module.exports = {
   add_cart,
   update_quantity,
   delete_item,
+  get_cart_item,
+  check_user_cart
 };
