@@ -36,6 +36,18 @@ async function create_order(req , res) {
 
 }
 
+async function get_orders(req , res) {
+    const user = req.user
+    const sql = "SELECT * FROM orders WHERE user_id = ?"
+    db.query(sql,[user.id], (err , result) => {
+        if(err){
+            return res.json({message : err.message})
+        }
+        res.json(result)
+    })
+}
+
 module.exports = {
     create_order,
+    get_orders
 }   
