@@ -24,7 +24,15 @@ async function create_order(req , res) {
         })
     })   
 
-    res.json(order)
+    const sql_add_Order_item = "INSERT INTO order_items(order_id , product_variant_id , product_id, quantity , price ) VALUES(?,?,?,?,?)"
+    cart_item.forEach(item => {
+        db.query(sql_add_Order_item , [order.insertId  , item.variant_id , item.product_id , item.quantity , item.total_price ] , (err , result) => {
+            if(err) console.log(err);
+            console.log(result);
+        })
+    })
+
+    res.json({message : "سفارش شما ثبت شد"})
 
 }
 
