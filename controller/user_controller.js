@@ -2,6 +2,7 @@ const db = require("../database/connection");
 const bcrypt = require("bcrypt");
 const logger = require("../services/logger");
 const jwt = require("jsonwebtoken");
+const mailler = require("../services/mailler");
 require("dotenv").config();
 
 async function RegisterUser(req, res) {
@@ -62,6 +63,9 @@ async function RegisterUser(req, res) {
         `
       );
       await log.save();
+
+      const mail = new mailler(email , `ثبت نام` , `ثبت نام شما موفقیت انجام شد`)
+      await mail.send()
 
       res.json({
         success: true,
