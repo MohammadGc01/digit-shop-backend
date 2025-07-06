@@ -39,12 +39,33 @@ async function create_order(req , res) {
 async function get_orders(req , res) {
     const user = req.user
     const sql = "SELECT * FROM orders WHERE user_id = ?"
-    db.query(sql,[user.id], (err , result) => {
+    const orders = await new Promise((resolve , reject) => {
+        db.query(sql,[user.id], (err , result) => {
         if(err){
             return res.json({message : err.message})
         }
-        res.json(result)
+        return resolve(result)
+     })
     })
+
+    const sql2 = "SELECT * FROM order_items WHERE order_id = ?" 
+    const order_items = await Promise.all(
+        orders.map(order => {
+              return new Promise((resolve , reject) => {
+            db.query(sql2, [order.id] ,(err ,result) => {
+              if(err) return reject(err)
+                resolve({
+                 ...order,
+                 items : result
+                })
+            })
+         })
+    })
+    )
+   
+
+    res.json(order_items)
+   
 }
 
 module.exports = {
