@@ -81,15 +81,22 @@ router.delete("/role/permission/delete/:id", authentication, async (req, res) =>
   }
 );
 
-
-
-
-
-
-router.put("/role/update/set_defualt_role/:role_id", async (req , res) => {
+router.put("/role/update/set_defualt_role/:role_id", authentication, async (req , res) => {
+    const Access = await authorization(req, res, Permission.EDIT_ROLE);
+  if (!Access)
+    return res.json({
+      success: false,
+      message: "شما به این بخش دسترسی ندارید",
+    });
   await set_defualt_role(req,res)
 })
-router.put("/role/update/unset_defualt_role/:role_id", async (req, res) => {
+router.put("/role/update/unset_defualt_role/:role_id", authentication,  async (req, res) => {
+      const Access = await authorization(req, res, Permission.EDIT_ROLE);
+  if (!Access)
+    return res.json({
+      success: false,
+      message: "شما به این بخش دسترسی ندارید",
+    });
   await unset_defualt_role(req, res);
 });
 
