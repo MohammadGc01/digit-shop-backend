@@ -92,8 +92,10 @@ async function upload_product_img(req, res) {
   });
 }
 
+// این قسمت از کد موقط هستش
 async function get_products(req, res) {
   const sql = `SELECT products.*, product_varients.* ,
+   products.name AS products_name,
    product_varients.id AS variants_id,
    product_varients.name AS variants_name  
    
@@ -105,11 +107,11 @@ async function get_products(req, res) {
         message: err.message,
       });
     const products = result.reduce((acc, row) => {
-      let product = acc.find(p => p.id === row.product_id);
+      let product = acc.find((p) => p.id === row.product_id);
       if (!product) {
         product = {
           id: row.product_id,
-          name: row.product_name,
+          name: row.products_name,
           create_time: row.create_time,
           variants: [],
         };
@@ -123,14 +125,13 @@ async function get_products(req, res) {
         discount: row.discount,
       });
 
-      return acc
-
+      return acc;
     }, []);
-    
-      res.json({
-        success: true,
-        result: products,
-      });
+
+    res.json({
+      success: true,
+      result: products,
+    });
   });
 }
 
