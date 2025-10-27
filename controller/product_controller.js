@@ -8,6 +8,8 @@ const date = new Date().toLocaleDateString("fa-IR", {
   day: "numeric",
 });
 
+
+
 async function create_product(req, res) {
   const { name, description, category_id, sub_category_id, brand_id } =
     req.body;
