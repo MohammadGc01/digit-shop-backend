@@ -42,7 +42,7 @@ async function login(req, res) {
       if (rolesData.success == false) return res.json(rolesData);
       const roles_id = await rolesData.map((role) => role.id);
       const permissionsDATA = await get_role_permissions(roles_id);
-      if (permissionsDATA.success == false) return res.json(permissions);
+      if (permissionsDATA.success == false) return res.json(permissionsDATA);
 
       const token = await jwt.sign(
         {
